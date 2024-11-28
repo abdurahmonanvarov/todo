@@ -8,16 +8,23 @@ import Create from "./pages/Create"
 import MainLoyout from "./loyouts/MainLoyout"
 
 //loyouts
-const getIfoFromLocol = () => {
-  return JSON.parse(localStorage.getItem("todo")) || []
-}
+const getInfoFromLocal = () => {
+  try {
+    return JSON.parse(localStorage.getItem("todo")) || [];
+  } catch (error) {
+    console.error("Error parsing local storage data:", error);
+    return [];
+  }
+};
 
 function App() {
-  const [todo, setTodo] = useState(getIfoFromLocol())
+  const [todo, setTodo] = useState(getInfoFromLocal())
 
   useEffect(() => {
-    localStorage.setItem("todo", JSON.stringify(todo))
-  }, [todo])
+    if (todo) {
+      localStorage.setItem("todo", JSON.stringify(todo));
+    }
+  }, [todo]);
   const routers = createBrowserRouter([
     {
       path: "/",
